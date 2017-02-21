@@ -1,0 +1,38 @@
+{
+  "name": "attr-adapter",
+  "version": "1.0.0",
+  "description": "Library for TypeScript that acts like JPA's AttributeConverter interface",
+  "main": "dist/index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lordazzi/typescript-attr-adapter.git"
+  },
+  "keywords": [
+    "typescript",
+    "jpa-like",
+    "jpa",
+    "hibernate",
+    "attribute-converter",
+    "attribute-adapter",
+    "attribute",
+    "converter",
+    "adapter"
+  ],
+  "author": "Ricardo Azzi Silva",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lordazzi/typescript-attr-adapter/issues"
+  },
+  "homepage": "https://github.com/lordazzi/typescript-attr-adapter#readme",
+  "devDependencies": {
+    "codelyzer": "^2.0.1"
+  }
+}
