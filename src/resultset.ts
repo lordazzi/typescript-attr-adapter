@@ -1,5 +1,4 @@
 
-
 /**
  * 
  */
@@ -26,8 +25,7 @@ class ResultSetService {
 export abstract class ResultSetModel {
 
     /**
-     * Transforma o JSON recebido por argumento em dados que preenchem o
-     * modelo instânciado
+     * Transform the given JSON in data to fill the resultset
      */
     public constructor(resultSet: Object) {
 
@@ -42,6 +40,9 @@ export abstract class ResultSetModel {
         });
     }
 
+    /**
+     * Generate a JSON based on this class
+     */
     public toJson(): Object {
         const json: Object          = new Object();
         const str: Array<string>    = Array<string>();
@@ -64,6 +65,9 @@ export abstract class ResultSetModel {
         return json;
     }
 
+    /**
+     * Transform this class in a JSON string
+     */
     public toString(): string {
         return JSON.stringify(this.toJson());
     }
