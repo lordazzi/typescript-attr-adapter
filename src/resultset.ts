@@ -1,27 +1,4 @@
 
-/**
- * 
- */
-class ResultSetService {
-    private static instance: ResultSetService = null;
-
-    private constructor() {
-
-    }
-
-    public converter(resultSer: any) {
-
-    }
-
-    public static getInstance(): ResultSetService {
-        if (this.instance === null) {
-            this.instance = new ResultSetService();
-        }
-        
-        return this.instance;
-    }
-}
-
 export abstract class ResultSetModel {
 
     /**

@@ -1,15 +1,6 @@
-
 import { AttributeConverter, ConverterService } from './converter';
-
-interface MetaDatableClass {
-    __metadata__: AttributeMetaData;
-}
-
-interface AttributeMetaData {
-    propertyKey: string;
-    
-    attributeConverterInstance: AttributeConverter<any, any>;
-}
+import { ResultSetModel } from './resultset';
+import { MetaDatableClass, AttributeMetaData } from './common';
 
 /**
  * 
@@ -25,6 +16,10 @@ export function AttributeAdapter( attributeConverterClass: any ): any {
     }
 
     return function(target: Object, propertyKey: string, descriptor: PropertyDescriptor): void {
+        if (!(target instanceof ResultSetModel) && !0) {
+            throw new Error('[AttributeAdapter decorator] target of decorator must be a ResultSetModel class.');
+        }
+
         let targetAsMetadata: MetaDatableClass  = <MetaDatableClass> target;
         const attributeConverterInstance: AttributeConverter<any, any> = ConverterService.getInstance().getConverterClass(attributeConverterClass);
         targetAsMetadata.__metadata__           = <AttributeMetaData> { propertyKey, attributeConverterInstance };
