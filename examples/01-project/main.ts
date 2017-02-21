@@ -1,6 +1,5 @@
-import { AttributeAdapter, ResultSetModel, AttributeConverter, Converter, JSONPrimitiveTypes } from '../../src';
+import { AttributeAdapter, ResultSetModel, AttributeConverter, JSONPrimitiveTypes } from '../../src';
 
-Converter(JSONPrimitiveTypes.STRING, Date)
 class StringToDateConverter implements AttributeConverter<string, Date> {
     
     toApplication(castMe: string): Date {
@@ -16,7 +15,7 @@ class Person extends ResultSetModel {
     public name: string;
     public surname: string;
 
-    @AttributeAdapter( Date )
+    @AttributeAdapter( StringToDateConverter )
     public birthday: Date;
 }
 

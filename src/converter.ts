@@ -1,6 +1,7 @@
 import { JSONPrimitiveTypes } from './common';
+import { AttributeAdapter } from './attribute-adapter';
 
-type AttrMapping        = Map<any|JSONPrimitiveTypes, AttributeConverter<any, any>>;
+type AttrConv = AttributeConverter<any, any>;
 
 /**
  * Library domain, if you're here you're very curious or you're me.
@@ -14,48 +15,41 @@ export class ConverterService {
     /**
      * Where all converters are stored
      */
-    private converters: Map<any|JSONPrimitiveTypes, AttrMapping> = null;
+    private converters: Array<AttrConv> = null;
 
     private constructor() {
-        this.converters = new Map<any|JSONPrimitiveTypes, AttrMapping>();
+        this.converters = new Array<AttrConv>();
     }
 
     /**
      * Create new converter class
      */
-    public setConverter(
-        serverDataType: any|JSONPrimitiveTypes,
-        applicationDataType: any|JSONPrimitiveTypes,
-        conversor: AttributeConverter<any, any>
+    public getConverterClass(
+        conversor: any
     ) {
 
-        let attrMapping: AttrMapping = this.converters.get(serverDataType);
-        if (!attrMapping) {
-            attrMapping = new Map<any|JSONPrimitiveTypes, AttributeConverter<any, any>>();
-        }
-        
-        attrMapping.set(applicationDataType, conversor);
-        this.converters.set(serverDataType, attrMapping);
-    }
+        const checkingClass: AttributeConverter<any, any> = <AttributeConverter<any, any>> conversor.prototype;
+        const hasToApplicationMethod: boolean = Object(checkingClass.toApplication) instanceof Function;
+        const hasToServerMethod: boolean = Object(checkingClass.toServer) instanceof Function;
 
-    /**
-     * Get a stored converter class
-     */
-    public getConverter(
-        serverDataType: any|JSONPrimitiveTypes,
-        applicationDataType: any|JSONPrimitiveTypes
-    ): AttributeConverter<any, any> {
-        const attrMapping: AttrMapping                  = this.converters.get(serverDataType);
-        if (attrMapping == null) {            
-            throw new Error(`[ConverterService singleton] no AttributeConverter implementation found for ${this.getClassName(serverDataType)} as server datatype and ${this.getClassName(applicationDataType)} as application datatype. Don't you miss the 'Converter' in the class declaration?`);
+        if (!hasToApplicationMethod || !hasToServerMethod) {
+            throw new Error('[AttributeAdapter decorator] invalid argument. You must pass an implementation of AttributeConverter.');
         }
 
-        const converter: AttributeConverter<any, any>   = attrMapping.get(applicationDataType);
-        if (attrMapping == null) {            
-            throw new Error(`[ConverterService singleton] no AttributeConverter implementation found for ${this.getClassName(serverDataType)} as server datatype and ${this.getClassName(applicationDataType)} as application datatype. Don't you miss the 'Converter' in the class declaration?`);
+        let isMyClass: AttrConv = null;
+        this.converters.forEach((clazz: AttrConv) => {
+            if (clazz.constructor === conversor) {
+                isMyClass = clazz;
+                return false;
+            }
+        });
+
+        if (!isMyClass) {
+            isMyClass = new conversor();
+            this.converters.push(isMyClass);
         }
 
-        return converter;
+        return isMyClass;
     }
 
     /**
@@ -83,28 +77,6 @@ export class ConverterService {
         }
         
         return this.instance;
-    }
-}
-
-
-/**
- * The @Converter decorator, different from JPA's implementation (where it just receives the argument 'autoApply'
- * ), will depend of you to give to it the datatypes used in your converter.
- * 
- * The application must follow this strategy because TypeScript won't give to us the datatype given to the generic
- * class, not, at least, without the use of witchcraft or MacGyverism.
- * 
- * So, your decorator will look like something like that:
- * 
- * @example
- *   @Converter( JSONPrimitiveTypes.STRING, Date )
- *   StringToDateConverter implements AttributeConverter<string, Date> {
- *      // 
- *   }
- */
-export function Converter(serverDataType: any, applicationDataType: any) {
-    return function(target: AttributeConverter<any, any>, propertyKey: string, descriptor: PropertyDescriptor): void {
-        ConverterService.getInstance().setConverter(serverDataType, applicationDataType, target);
     }
 }
 
