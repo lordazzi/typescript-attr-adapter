@@ -19,12 +19,14 @@ export abstract class ResultSetModel {
 
         Object.keys(this).forEach((attr: string) => {
             const attributeConverter: AttributeConverter<any, any> = ourMap.get(attr);
-            const resultSetHasProperty: boolean = resultSet.hasOwnProperty(attr);
-            const propertyHasDefaultValue: boolean = this[attr] !== undefined; // change to 'this.prototype[attr]'
+            const resultSetHasProperty: boolean     = resultSet.hasOwnProperty(attr);
+            // TODO: change to 'this.prototype[attr]'
+            const propertyHasDefaultValue: boolean  = this[attr] !== undefined;
+            const doNotUseDefaultValue: boolean     = !(!resultSetHasProperty && propertyHasDefaultValue);
 
             if (attributeConverter) {
                 this[attr] = attributeConverter.toApplication(resultSet[attr]);
-            } else if (!(!resultSetHasProperty && propertyHasDefaultValue)) {
+            } else if (doNotUseDefaultValue) {
                 this[attr] = resultSet[attr];
             }
         });
@@ -46,7 +48,7 @@ export abstract class ResultSetModel {
                 const baseModel = <ResultSetModel>this[attr];
                 json[attr]      = baseModel.toJson();
             } else if (isObject) {
-                //   TODO
+                //   TODO: aaa
             } else if (!isFunction) {
                 json[attr] = this[attr];
             }
