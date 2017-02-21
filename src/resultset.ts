@@ -1,3 +1,4 @@
+import { MetaDatableClass } from './metadata';
 
 export abstract class ResultSetModel {
 

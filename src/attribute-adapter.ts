@@ -1,6 +1,6 @@
 import { AttributeConverter, ConverterService } from './converter';
 import { ResultSetModel } from './resultset';
-import { MetaDatableClass, AttributeMetaData } from './common';
+import { MetaDatableClass } from './metadata';
 
 /**
  * 
@@ -22,6 +22,11 @@ export function AttributeAdapter( attributeConverterClass: any ): any {
 
         let targetAsMetadata: MetaDatableClass  = <MetaDatableClass> target;
         const attributeConverterInstance: AttributeConverter<any, any> = ConverterService.getInstance().getConverterClass(attributeConverterClass);
-        targetAsMetadata.__metadata__           = <AttributeMetaData> { propertyKey, attributeConverterInstance };
+        
+        if (!targetAsMetadata.__metadata__) {
+            targetAsMetadata.__metadata__ = new Map<string, AttributeConverter<any, any>>();
+        }
+
+        targetAsMetadata.__metadata__.set(propertyKey, attributeConverterInstance);
     }
 }
