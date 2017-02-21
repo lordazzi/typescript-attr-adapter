@@ -20,13 +20,12 @@ export abstract class ResultSetModel {
         Object.keys(this).forEach((attr: string) => {
             const attributeConverter: AttributeConverter<any, any> = ourMap.get(attr);
             const resultSetHasProperty: boolean     = resultSet.hasOwnProperty(attr);
-            // TODO: change to 'this.prototype[attr]'
-            const propertyHasDefaultValue: boolean  = this[attr] !== undefined;
-            const doNotUseDefaultValue: boolean     = !(!resultSetHasProperty && propertyHasDefaultValue);
+            // TODO: check if need to change to 'this.prototype[attr]'
+            const useValueFromResultSet: boolean     = (resultSetHasProperty || this[attr] === undefined);
 
             if (attributeConverter) {
                 this[attr] = attributeConverter.toApplication(resultSet[attr]);
-            } else if (doNotUseDefaultValue) {
+            } else if (useValueFromResultSet) {
                 this[attr] = resultSet[attr];
             }
         });
