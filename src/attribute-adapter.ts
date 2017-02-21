@@ -23,10 +23,10 @@ export function AttributeAdapter( attributeConverterClass: any ): any {
         let targetAsMetadata: MetaDatableClass  = <MetaDatableClass> target;
         const attributeConverterInstance: AttributeConverter<any, any> = ConverterService.getInstance().getConverterClass(attributeConverterClass);
         
-        if (!targetAsMetadata.__metadata__) {
-            targetAsMetadata.__metadata__ = new Map<string, AttributeConverter<any, any>>();
+        if (!targetAsMetadata.__att_converter_metadata__) {
+            targetAsMetadata.__att_converter_metadata__ = new Map<string, AttributeConverter<any, any>>();
         }
 
-        targetAsMetadata.__metadata__.set(propertyKey, attributeConverterInstance);
+        targetAsMetadata.__att_converter_metadata__.set(propertyKey, attributeConverterInstance);
     }
 }

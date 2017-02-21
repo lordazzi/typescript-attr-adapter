@@ -1,9 +1,12 @@
 import { MetaDatableClass } from './metadata';
+import { AttributeConverter } from './converter';
 
 export abstract class ResultSetModel {
 
     /**
-     * Transform the given JSON in data to fill the resultset
+     * Transform the given JSON in data to fill the resultset.
+     * TODO: remove this code from constructor
+     * TODO: separete this code into 'fill with data' and 'cast'
      */
     public constructor(resultSet: Object) {
 
@@ -11,8 +14,17 @@ export abstract class ResultSetModel {
             throw new Error('[ResultSetModel class] the resultSet argument must be a JSON object.');
         }
 
+        const metaData: MetaDatableClass = <MetaDatableClass> <Object> (<Object> this).constructor;
+        const ourMap: Map<string, AttributeConverter<any, any>> = metaData.__att_converter_metadata__;
+
         Object.keys(this).forEach((attr: string) => {
-            if (!(resultSet.hasOwnProperty(attr) && this[attr] !== undefined)) {
+            const attributeConverter: AttributeConverter<any, any> = ourMap.get(attr);
+            const resultSetHasProperty: boolean = resultSet.hasOwnProperty(attr);
+            const propertyHasDefaultValue: boolean = this[attr] !== undefined; // change to 'this.prototype[attr]'
+
+            if (attributeConverter) {
+                this[attr] = attributeConverter.toApplication(resultSet[attr]);
+            } else if (!(!resultSetHasProperty && propertyHasDefaultValue)) {
                 this[attr] = resultSet[attr];
             }
         });
