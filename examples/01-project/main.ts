@@ -1,4 +1,4 @@
-import { AttributeAdapter, ResultSetModel, AttributeConverter, JSONPrimitiveTypes } from '../../src';
+import { AttributeAdapter, ResultSetModel, AttributeConverter } from '../../src';
 
 class StringToDateConverter implements AttributeConverter<string, Date> {
     
