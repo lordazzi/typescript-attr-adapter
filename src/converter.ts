@@ -3,9 +3,12 @@ import { JSONPrimitiveTypes } from './common';
 type AttrMapping        = Map<any|JSONPrimitiveTypes, AttributeConverter<any, any>>;
 
 /**
+ * Library domain, if you're here you're very curious or you're me.
  * 
+ * This class controls every AttributeConverter implementation correctly
+ * write and decorated.
  */
-class ConverterService {
+export class ConverterService {
     private static instance: ConverterService = null;
 
     /**
@@ -17,6 +20,9 @@ class ConverterService {
         this.converters = new Map<any|JSONPrimitiveTypes, AttrMapping>();
     }
 
+    /**
+     * Create new converter class
+     */
     public setConverter(
         serverDataType: any|JSONPrimitiveTypes,
         applicationDataType: any|JSONPrimitiveTypes,
@@ -32,6 +38,9 @@ class ConverterService {
         this.converters.set(serverDataType, attrMapping);
     }
 
+    /**
+     * Get a stored converter class
+     */
     public getConverter(
         serverDataType: any|JSONPrimitiveTypes,
         applicationDataType: any|JSONPrimitiveTypes
@@ -49,6 +58,9 @@ class ConverterService {
         return converter;
     }
 
+    /**
+     * This method is to say the class name on a exception
+     */
     private getClassName(dataType: any|JSONPrimitiveTypes): string {
         const isEnum: boolean   = dataType.constructor === JSONPrimitiveTypes;
         const isClass: boolean  = dataType && dataType.constructor && Object(dataType) instanceof Function;
@@ -62,6 +74,9 @@ class ConverterService {
         }
     }
 
+    /**
+     * Get a singleton instance
+     */
     public static getInstance(): ConverterService {
         if (this.instance === null) {
             this.instance = new ConverterService();
