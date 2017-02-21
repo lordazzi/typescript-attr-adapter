@@ -1,5 +1,4 @@
 
-import { JSONPrimitiveTypes } from './common';
 import { AttributeConverter, ConverterService } from './converter';
 
 interface MetaDatableClass {

@@ -1,4 +1,3 @@
-import { JSONPrimitiveTypes } from './common';
 import { AttributeAdapter } from './attribute-adapter';
 
 type AttrConv = AttributeConverter<any, any>;
@@ -50,22 +49,6 @@ export class ConverterService {
         }
 
         return isMyClass;
-    }
-
-    /**
-     * This method is to say the class name on a exception
-     */
-    private getClassName(dataType: any|JSONPrimitiveTypes): string {
-        const isEnum: boolean   = dataType.constructor === JSONPrimitiveTypes;
-        const isClass: boolean  = dataType && dataType.constructor && Object(dataType) instanceof Function;
-
-        if (isEnum) {
-            return <string> dataType;
-        } else if (isClass) {
-            return (<Function>dataType).name;
-        } else {
-            throw new Error('[ConverterService singleton] dataType given was not a supported dataType');
-        }
     }
 
     /**
