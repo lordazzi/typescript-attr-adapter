@@ -72,6 +72,21 @@ class ConverterService {
 }
 
 
+/**
+ * The @Converter decorator, different from JPA's implementation (where it just receives the argument 'autoApply'
+ * ), will depend of you to give to it the datatypes used in your converter.
+ * 
+ * The application must follow this strategy because TypeScript won't give to us the datatype given to the generic
+ * class, not, at least, without the use of witchcraft or MacGyverism.
+ * 
+ * So, your decorator will look like something like that:
+ * 
+ * @example
+ *   @Converter( JSONPrimitiveTypes.STRING, Date )
+ *   StringToDateConverter implements AttributeConverter<string, Date> {
+ *      // 
+ *   }
+ */
 export function Converter(serverDataType: any, applicationDataType: any) {
     return function(target: AttributeConverter<any, any>, propertyKey: string, descriptor: PropertyDescriptor): void {
         ConverterService.getInstance().setConverter(serverDataType, applicationDataType, target);
@@ -79,7 +94,7 @@ export function Converter(serverDataType: any, applicationDataType: any) {
 }
 
 /**
- * A Converter must implement the attrAdapter.AttributeConverter interface, where applicationDataType is the
+ * A converter must implement the attrAdapter.AttributeConverter interface, where applicationDataType is the
  * class of the model inside your application and serverDataType is the type of the attribute of a result set
  * given from a request, localStorage, sessionStorage or a string parsed into a JSON from anywhere. 
  */
