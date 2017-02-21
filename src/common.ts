@@ -1,4 +1,8 @@
-
-export type InnerDecoratorType = (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any;
-
-export type Class              = Function;
+/**
+ * 
+ */
+export enum JSONPrimitiveTypes {
+    BOOLEAN = <any> 'boolean',
+    NUMBER = <any> 'number',
+    STRING = <any> 'string'
+}

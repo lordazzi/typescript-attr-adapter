@@ -1,25 +1,29 @@
 
-import { InnerDecoratorType, Class } from './common';
+import { JSONPrimitiveTypes } from './common';
 
-/**
- * 
- */
-export enum JSONPrimitiveTypes {
-    BOOLEAN, NUMBER, STRING
+interface MetaDatableClass {
+    __metadata__: AttributeMetaData;
+}
+
+interface AttributeMetaData {
+    propertyKey: string;
+
+    dataType: any;
 }
 
 /**
  * 
  */
-export function AttributeAdapter(adapterArguments: JSONPrimitiveTypes|AttributeAdapterArguments|Class): InnerDecoratorType {
-    return function(target: Class, propertyKey: string, descriptor: PropertyDescriptor){
+export function AttributeAdapter(dataType: any|JSONPrimitiveTypes): any {
+    const isEnum: boolean   = dataType.constructor === JSONPrimitiveTypes;
+    const isClass: boolean  = dataType && dataType.constructor && Object(dataType) instanceof Function;
 
+    if (!isEnum && !isClass) {
+        throw new Error('[AttributeAdapter decorator] dataType given was not a supported dataType');
     }
-}
 
-/**
- * 
- */
-export interface AttributeAdapterArguments {
-    toType: Class|JSONPrimitiveTypes
+    return function(target: Object, propertyKey: string, descriptor: PropertyDescriptor): void {
+        let targetAsMetadata: MetaDatableClass  = <MetaDatableClass> target;
+        targetAsMetadata.__metadata__           = <AttributeMetaData> { propertyKey, dataType };
+    }
 }
