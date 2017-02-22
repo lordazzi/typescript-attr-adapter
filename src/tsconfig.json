@@ -1,18 +1,25 @@
 {
-  "compilerOptions": {
-    "baseUrl": "",
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "strictNullChecks": false,
-    "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "../../dist/",
-    "sourceMap": false,
-    "target": "es5",
-    "typeRoots": [
-      "../../node_modules/@types"
+    "compilerOptions": {
+        "baseUrl": "",
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "strictNullChecks": false,
+        "experimentalDecorators": true,
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "module": "amd",
+        "moduleResolution": "node",
+        "outDir": "../dist/",
+        "sourceMap": false,
+        "target": "es5"
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "test.ts",
+        "**/*.spec.ts"
     ]
-  }
 }
