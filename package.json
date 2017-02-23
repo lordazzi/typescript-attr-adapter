@@ -25,7 +25,10 @@
     "attribute-adapter",
     "attribute",
     "converter",
-    "adapter"
+    "adapter",
+    "angular",
+    "angular2",
+    "ng2", "ng"
   ],
   "author": "Ricardo Azzi Silva",
   "license": "MIT",
@@ -35,6 +38,7 @@
   "homepage": "https://github.com/lordazzi/typescript-attr-adapter#readme",
   "devDependencies": {
     "codelyzer": "^2.0.1",
+    "es6-module-loader": "^0.17.11",
     "jasmine": "^2.5.3",
     "jasmine-core": "^2.5.2",
     "karma": "^1.5.0",
@@ -42,9 +46,11 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-remap-istanbul": "^0.6.0",
+    "karma-systemjs": "^0.16.0",
     "karma-typescript": "^2.1.7",
     "karma-typescript-preprocessor": "^0.3.1",
     "progress": "^1.1.8",
+    "systemjs": "^0.20.9",
     "tslint": "^4.4.2",
     "typescript": "^2.1.6",
     "zone.js": "^0.7.7"
