@@ -38,7 +38,7 @@ export abstract class ResultSetModel {
         const metaData = this.getMetaData();
 
         if (metaData) {
-            Object.keys(metaData).forEach((attr: string) => {
+            metaData.forEach((value, attr: string) => {
                 this[attr] = metaData.get(attr).toApplication(this[attr]);
             });
         }
@@ -48,8 +48,8 @@ export abstract class ResultSetModel {
      * Return a map with each AttributeConverter used by the class and the name of the attribute
      * where it should be applied 
      */
-    public getMetaData(): Map<string, AttributeConverter<any, any>> {
-        const metaData: MetaDatableClass = <MetaDatableClass><Object>(<Object>this).constructor;
+    private getMetaData(): Map<string, AttributeConverter<any, any>> {
+        const metaData: MetaDatableClass = <MetaDatableClass><Object>(<Object>this).constructor.prototype;
         return metaData.__att_converter_metadata__;
     }
 
@@ -63,9 +63,9 @@ export abstract class ResultSetModel {
 
         Object.keys(this).forEach((attr: string) => {
             const isFunction: boolean = (Object(this[attr]).constructor === Function);
-            const isBaseModel: boolean = (this[attr] instanceof ResultSetModel);
+            const isBaseModel: boolean = (this[attr] instanceof ResultSetModel); 
             const isObject: boolean = (this[attr] instanceof Object);
-            const isInitializeProperty: boolean = (attr === 'initialized');
+            const ignoreProperty: boolean = (attr === 'initialized' || attr === '__att_converter_metadata__');
             const isArray: boolean = (this[attr] instanceof Array);
             let attrConverter: AttributeConverter<any, any> = null;
 
@@ -73,7 +73,7 @@ export abstract class ResultSetModel {
                 attrConverter = metaData.get(attr);
             }
 
-            if (isInitializeProperty || isFunction) {
+            if (ignoreProperty || isFunction) {
                 return;
             } else if (attrConverter) {
                 json[attr] = attrConverter.toServer(this[attr]);

@@ -2,6 +2,8 @@ import { AttributeConverter, ConverterService } from './converter';
 import { ResultSetModel } from './resultset';
 import { MetaDatableClass } from './metadata';
 
+type ClassPrototype = Object;
+
 /**
  * 
  */
@@ -15,7 +17,7 @@ export function AttributeAdapter( attributeConverterClass: any ): any {
         throw new Error('[AttributeAdapter decorator] invalid argument. You must pass an implementation of AttributeConverter.');
     }
 
-    return function(target: Object, propertyKey: string, descriptor: PropertyDescriptor): void {
+    return function(target: ClassPrototype, propertyKey: string, descriptor: PropertyDescriptor): void {
         let targetAsMetadata: MetaDatableClass  = <MetaDatableClass> target;
         const attributeConverterInstance: AttributeConverter<any, any> = ConverterService.getInstance().getConverterClass(attributeConverterClass);
         

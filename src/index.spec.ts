@@ -33,23 +33,24 @@ describe('01 - AttributeAdapter', () => {
     }
 
     class Person extends ResultSetModel {
-        public name: string;
-        public surname: string;
+        public name: string = null;
+        public surname: string = null;
 
         @AttributeAdapter( StringToDateConverter )
-        public birthday: Date;
+        public birthday: Date = null;
 
         public constructor(json: Object) {
             super();
             this.initialize(json);
+            this.convert();
         }
     }
 
     it('01 - Testando conversão de string para data', () => {
         let dataThatsComesFromAnyWhere: Object = JSON.parse('{"name":"Ricardo","surname":"Azzi Silva","birthday":"1991-09-22"}');
         let Ricardo: Person = new Person(dataThatsComesFromAnyWhere);
-        
-        expect(Ricardo.birthday.getTime()).toEquals(new Date("1991-09-22").getTime());
+
+        expect(Ricardo.birthday.getTime()).toBe(new Date("1991-09-22").getTime());
     });
 
     it('02 - Testando conversão de string para data com entrada de dado nulo', () => {
