@@ -113,19 +113,19 @@ describe('02 - ResultSetModel', () => {
         expect(frango.cor).toBe('amarelo');
     });
 
-    // it('11 - Convertendo objeto com array para json', () => {
-    //     class Carro extends ResultSetModel {
-    //         public rodas: Array<number> = null;
-    //         public teto: string = null;
-    //         public cor: string = null;
+    it('11 - Convertendo objeto com array para json e conversão do objeto para string', () => {
+        class Carro extends ResultSetModel {
+            public rodas: Array<number> = null;
+            public teto: string = null;
+            public cor: string = null;
 
-    //         public constructor(resultSet: Object) {
-    //             super();
-    //             this.initialize(resultSet);
-    //         }
-    //     }
+            public constructor(resultSet: Object) {
+                super();
+                this.initialize(resultSet);
+            }
+        }
 
-    //     const fusca: Carro = new Carro({ rodas: [1, 2, 3, 4], teto: 'sim', cor: 'azul' });
-
-    // });
+        const fusca: Carro = new Carro({ rodas: [1, 2, 3, 4], teto: 'sim', cor: 'azul' });
+        expect(String(fusca)).toBe('{"rodas":[1,2,3,4],"teto":"sim","cor":"azul"}');
+    });
 });

@@ -14,7 +14,7 @@ export abstract class ResultSetModel {
         }
 
         const attrs: Array<string> = Object.keys(this);
-        if (attrs.length == 0) {
+        if (attrs.length == 1) {
             throw new Error('[ResultSetModel class] you must initialize each attribute in the class with null and call initialize() after call super() in constructor.');
         }
 
@@ -81,7 +81,7 @@ export abstract class ResultSetModel {
                 const baseModel = <ResultSetModel>this[attr];
                 json[attr] = baseModel.toJson();
             } else if (isArray) {
-                json[attr] = this.convertArrayPropertyToJson(json[attr]);
+                json[attr] = this.convertArrayPropertyToJson(this[attr]);
             } else if (isObject) {
                 throw new Error(`[ResultSetModel class] can\'t convert object in "${attr}" to json. Did you forgot the AttributeAdapter decorator?`);
             } else {
