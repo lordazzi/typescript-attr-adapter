@@ -73,7 +73,7 @@ export abstract class ResultSetModel {
                 attrConverter = metaData.get(attr);
             }
 
-            if (isInitializeProperty || !isFunction) {
+            if (isInitializeProperty || isFunction) {
                 return;
             } else if (attrConverter) {
                 json[attr] = attrConverter.toServer(this[attr]);

@@ -106,10 +106,26 @@ describe('02 - ResultSetModel', () => {
 
     it('10 - Consegue converter objeto simples para JSON', () => {
         let frango: Comida = new Comida({ sabor: 'de frango', cheiro: 'de frango também', cor: 'amarelo' });
-        frango = <Comida> frango.toJson();
+        frango = <Comida>frango.toJson();
 
         expect(frango.sabor).toBe('de frango');
         expect(frango.cheiro).toBe('de frango também');
         expect(frango.cor).toBe('amarelo');
     });
+
+    // it('11 - Convertendo objeto com array para json', () => {
+    //     class Carro extends ResultSetModel {
+    //         public rodas: Array<number> = null;
+    //         public teto: string = null;
+    //         public cor: string = null;
+
+    //         public constructor(resultSet: Object) {
+    //             super();
+    //             this.initialize(resultSet);
+    //         }
+    //     }
+
+    //     const fusca: Carro = new Carro({ rodas: [1, 2, 3, 4], teto: 'sim', cor: 'azul' });
+
+    // });
 });
