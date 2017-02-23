@@ -6,65 +6,54 @@ module.exports = function (config) {
         plugins: [
             require('karma-jasmine'),
             require('karma-chrome-launcher'),
-            require('karma-typescript'),
             require('karma-typescript-preprocessor'),
             require('karma-systemjs')
         ],
+
         frameworks: [
-            'systemjs', 'jasmine'
+            'systemjs',
+            'jasmine'
         ],
 
         files: [
-            { pattern: './src/test.ts', watched: false }
+            'src/*.spec.ts'
         ],
 
         preprocessors: {
-            './src/test.ts': ['typescript']
-        },
-
-        mime: {
-            'text/x-typescript': ['ts', 'tsx']
-        },
-
-        typescriptPreprocessor: {
-            // options passed to the typescript compiler 
-            options: {
-                noImplicitAny: true,
-                declaration: true,
-                emitDecoratorMetadata: true,
-                strictNullChecks: false,
-                experimentalDecorators: true,
-                lib: [
-                    "es6",
-                    "dom"
-                ],
-                module: "commonjs",
-                moduleResolution: "node",
-                sourceMap: false,
-                target: "es5"
-            },
+            '*.ts': ['typescript']
         },
 
         systemjs: {
-
-            serveFiles: [],
-
-            config: {
-                transpiler: 'typescript',
-                packages: {
-                    src: {
-                        defaultExtension: 'ts'
-                    }
-                }
-            }
+            configFile: 'systemjs.config.js',
+            serveFiles: [
+                'src/**/*.ts'
+            ]
         },
 
+        // test results reporter to use
+        // possible values: 'dots', 'progress'
+        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
         reporters: ['progress'],
+
+        // web server port
         port: 9876,
+
+        // enable / disable colors in the output (reporters and logs)
         colors: true,
+
+        // level of logging
+        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
         logLevel: config.LOG_INFO,
+
+        // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
-        browsers: ['Chrome'],
+
+        // start these browsers
+        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+        browsers: [ 'Chrome' ],
+
+        // Continuous Integration mode
+        // if true, Karma captures browsers, runs the tests and exits
         singleRun: false
     });
 };

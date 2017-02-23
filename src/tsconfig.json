@@ -1,6 +1,6 @@
 {
+    "compileOnSave": false,
     "compilerOptions": {
-        "baseUrl": "",
         "declaration": true,
         "emitDecoratorMetadata": true,
         "strictNullChecks": false,
@@ -10,7 +10,7 @@
             "dom"
         ],
         "module": "amd",
-        "moduleResolution": "node",
+        "moduleResolution": "classic",
         "outDir": "../dist/",
         "sourceMap": false,
         "target": "es5"

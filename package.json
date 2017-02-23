@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "karma start",
     "build": "tsc --project src -pretty"
   },
   "repository": {
@@ -28,7 +28,8 @@
     "adapter",
     "angular",
     "angular2",
-    "ng2", "ng"
+    "ng2",
+    "ng"
   ],
   "author": "Ricardo Azzi Silva",
   "license": "MIT",
@@ -40,19 +41,15 @@
     "codelyzer": "^2.0.1",
     "es6-module-loader": "^0.17.11",
     "jasmine": "^2.5.3",
-    "jasmine-core": "^2.5.2",
     "karma": "^1.5.0",
     "karma-chrome-launcher": "^2.0.0",
-    "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
-    "karma-remap-istanbul": "^0.6.0",
     "karma-systemjs": "^0.16.0",
-    "karma-typescript": "^2.1.7",
     "karma-typescript-preprocessor": "^0.3.1",
     "progress": "^1.1.8",
-    "systemjs": "^0.20.9",
+    "systemjs": "^0.19.3",
     "tslint": "^4.4.2",
-    "typescript": "^2.1.6",
+    "typescript": "^2.2.1",
     "zone.js": "^0.7.7"
   }
 }
