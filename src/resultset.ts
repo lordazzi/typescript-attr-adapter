@@ -23,6 +23,8 @@ export abstract class ResultSetModel {
                 this[attr] = resultSet[attr];
             }
         });
+
+        this.initialized = true;
     }
 
     /**
@@ -33,15 +35,22 @@ export abstract class ResultSetModel {
             throw new Error('[ResultSetModel class] you can\'t call method conversion without initilize it before. Execute first initialize() and then convert()');
         }
 
-        const metaData: MetaDatableClass = <MetaDatableClass><Object>(<Object>this).constructor;
-        const map: Map<string, AttributeConverter<any, any>> = metaData.__att_converter_metadata__;
-        let attributeConverter: AttributeConverter<any, any> = null;
-
-        if (map) {
-            Object.keys(map).forEach((attr: string) => {
-                this[attr] = attributeConverter.toApplication(this[attr]);
+        const metaData = this.getMetaData();
+        
+        if (metaData) {
+            Object.keys(metaData).forEach((attr: string) => {
+                this[attr] = metaData.get(attr).toApplication(this[attr]);
             });
         }
+    }
+
+    /**
+     * Return a map with each AttributeConverter used by the class and the name of the attribute
+     * where it should be applied 
+     */
+    public getMetaData(): Map<string, AttributeConverter<any, any>> {
+        const metaData: MetaDatableClass = <MetaDatableClass><Object>(<Object>this).constructor;
+        return metaData.__att_converter_metadata__;
     }
 
     /**
@@ -50,18 +59,28 @@ export abstract class ResultSetModel {
     public toJson(): Object {
         const json: Object = new Object();
         const str: Array<string> = Array<string>();
+        const metaData = this.getMetaData();
 
         Object.keys(this).forEach((attr: string) => {
             const isFunction = (Object(this[attr]).constructor === Function);
             const isBaseModel = (this[attr] instanceof ResultSetModel);
             const isObject = (this[attr] instanceof Object);
+            const isInitializeProperty = (attr === 'initialized');
+            let attrConverter: AttributeConverter<any, any> = null;
+            if (metaData) {
+                attrConverter = metaData.get(attr);
+            }
 
-            if (isBaseModel) {
+            if (isInitializeProperty || !isFunction) {
+                return;
+            } else if (attrConverter) {
+                json[attr] = attrConverter.toServer(this[attr]);
+            } else if (isBaseModel) {
                 const baseModel = <ResultSetModel>this[attr];
                 json[attr] = baseModel.toJson();
             } else if (isObject) {
                 throw new Error(`[ResultSetModel class] can\'t convert object of class ${this[attr].prototype.name}. Did you forgot the AttributeAdapter decorator?`);
-            } else if (!isFunction) {
+            } else {
                 json[attr] = this[attr];
             }
         });

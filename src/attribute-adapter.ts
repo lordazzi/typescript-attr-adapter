@@ -23,6 +23,10 @@ export function AttributeAdapter( attributeConverterClass: any ): any {
             targetAsMetadata.__att_converter_metadata__ = new Map<string, AttributeConverter<any, any>>();
         }
 
+        if (targetAsMetadata.__att_converter_metadata__.get(propertyKey)) {
+            throw new Error(`[AttributeAdapter decorator] you can use this decorator one time to each attribute. (${propertyKey} property in ${targetAsMetadata.name}, using ${attributeConverterClass.name}.)`);
+        }
+
         targetAsMetadata.__att_converter_metadata__.set(propertyKey, attributeConverterInstance);
     }
 }

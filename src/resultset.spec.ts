@@ -43,13 +43,53 @@ describe('02 - ResultSetModel', () => {
 
     it('05 - Não converte objeto para JSON se houver um objeto na classe sem solução para virar JSON', () => {
         expect(() => {
-            Ricardo.toJson()
-        }).toThrowError(/[ResultSetModel class]/);
+            let t = Ricardo.toJson();
+            console.info(t);
+        }).toThrowError(Error);
     });
 
     it('06 - Não converte objeto para string se houver um objeto na classe sem solução para virar JSON', () => {
         expect(() => {
             String(Ricardo);
-        }).toThrowError(/[ResultSetModel class]/);
+        }).toThrowError(Error);
+    });
+    
+    it('07 - Criando uma instância passando algo diferente de JSON por argumento', () => {
+        expect(() => {
+            new Pessoa(<Object> Date);
+        }).toThrowError(Error);
+    });
+
+    it('08 - Criando classe sem inicializar os atributos com null', () => {
+        expect(() => {
+            class Funcionario extends ResultSetModel {
+                public nome: string;
+                public sobrenome: string;
+
+                public constructor(resultSet: Object) {
+                    super();
+                    this.initialize(resultSet);
+                }
+            }
+
+            new Funcionario({});
+        }).toThrowError(Error);
+    });
+
+    it('09 - Chamando o metodo de converção sem chamar o de inicialização', () => {
+        expect(() => {
+            class Animal extends ResultSetModel {
+                public nome: string;
+                public sobrenome: string;
+
+                public constructor(resultSet: Object) {
+                    super();
+                    this.convert();
+                }
+            }
+
+            new Animal({});
+
+        }).toThrowError(Error);
     });
 });
