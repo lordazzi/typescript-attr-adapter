@@ -36,7 +36,7 @@ export abstract class ResultSetModel {
         }
 
         const metaData = this.getMetaData();
-        
+
         if (metaData) {
             Object.keys(metaData).forEach((attr: string) => {
                 this[attr] = metaData.get(attr).toApplication(this[attr]);
@@ -62,10 +62,11 @@ export abstract class ResultSetModel {
         const metaData = this.getMetaData();
 
         Object.keys(this).forEach((attr: string) => {
-            const isFunction = (Object(this[attr]).constructor === Function);
-            const isBaseModel = (this[attr] instanceof ResultSetModel);
-            const isObject = (this[attr] instanceof Object);
-            const isInitializeProperty = (attr === 'initialized');
+            const isFunction: boolean = (Object(this[attr]).constructor === Function);
+            const isBaseModel: boolean = (this[attr] instanceof ResultSetModel);
+            const isObject: boolean = (this[attr] instanceof Object);
+            const isInitializeProperty: boolean = (attr === 'initialized');
+            const isArray: boolean = (this[attr] instanceof Array);
             let attrConverter: AttributeConverter<any, any> = null;
             if (metaData) {
                 attrConverter = metaData.get(attr);
@@ -78,8 +79,20 @@ export abstract class ResultSetModel {
             } else if (isBaseModel) {
                 const baseModel = <ResultSetModel>this[attr];
                 json[attr] = baseModel.toJson();
+            } else if (isArray) {
+                json[attr] = new Array();
+                for (let i = 0; i < this[attr].length; i++) {
+                    if (isBaseModel) {
+                        const baseModel = <ResultSetModel>this[attr][i];
+                        json[attr].push(baseModel.toJson());
+                    } else if (isObject) {
+                        throw new Error(`[ResultSetModel class] can\'t convert object in array of class "${this[attr].prototype.name}" at "${attr}" array. Did you forgot the AttributeAdapter decorator?`);
+                    } else {
+                        json[attr].push(this[attr][i]);
+                    }
+                }
             } else if (isObject) {
-                throw new Error(`[ResultSetModel class] can\'t convert object of class ${this[attr].prototype.name}. Did you forgot the AttributeAdapter decorator?`);
+                throw new Error(`[ResultSetModel class] can\'t convert object of class "${this[attr].prototype.name}" at "${attr}". Did you forgot the AttributeAdapter decorator?`);
             } else {
                 json[attr] = this[attr];
             }
