@@ -7,7 +7,7 @@ declare var expect: any;
 
 import { AttributeAdapter, ResultSetModel, AttributeConverter } from './index';
 
-describe('AttributeAdapter', () => {
+describe('01 - AttributeAdapter', () => {
     class StringToDateConverter implements AttributeConverter<string, Date> {
     
         toApplication(castMe: string): Date {
@@ -38,16 +38,21 @@ describe('AttributeAdapter', () => {
 
         @AttributeAdapter( StringToDateConverter )
         public birthday: Date;
+
+        public constructor(json: Object) {
+            super();
+            this.initialize(json);
+        }
     }
 
-    it('Testando conversão de string para data', () => {
+    it('01 - Testando conversão de string para data', () => {
         let dataThatsComesFromAnyWhere: Object = JSON.parse('{"name":"Ricardo","surname":"Azzi Silva","birthday":"1991-09-22"}');
         let Ricardo: Person = new Person(dataThatsComesFromAnyWhere);
         
         expect(Ricardo.birthday.getTime()).toEquals(new Date("1991-09-22").getTime());
     });
 
-    it('Testando conversão de string para data com entrada de dado nulo', () => {
+    it('02 - Testando conversão de string para data com entrada de dado nulo', () => {
         let anotherDataFromHell: Object = JSON.parse('{"name":"Fred","surname":"just Fred","birthday":null}');
         let Fred: Person = new Person(anotherDataFromHell);
 
