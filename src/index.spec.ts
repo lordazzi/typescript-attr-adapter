@@ -5,9 +5,9 @@ declare var beforeEach: any;
 declare var it: any;
 declare var expect: any;
 
-import { AttributeAdapter, ResultSetModel, AttributeConverter } from './';
+import { AttributeAdapter, ResultSetModel, AttributeConverter } from './index';
 
-describe('AppComponent', () => {
+describe('AttributeAdapter', () => {
     class StringToDateConverter implements AttributeConverter<string, Date> {
     
         toApplication(castMe: string): Date {
