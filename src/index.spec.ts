@@ -41,7 +41,7 @@ describe('01 - AttributeAdapter', () => {
 
         public constructor(json: Object) {
             super();
-            this.initialize(json);
+            this.fill(json);
             this.convert();
         }
     }

@@ -8,7 +8,7 @@ export abstract class ResultSetModel {
     /**
      * Fill the object with a json
      */
-    public initialize(resultSet: Object): void {
+    public fill(resultSet: Object): void {
         if (resultSet.constructor !== Object) {
             throw new Error('[ResultSetModel class] the resultSet argument must be a JSON object.');
         }
@@ -32,7 +32,7 @@ export abstract class ResultSetModel {
      */
     public convert() {
         if (this.initialized == false) {
-            throw new Error('[ResultSetModel class] you can\'t call method conversion without initilize it before. Execute first initialize() and then convert()');
+            throw new Error('[ResultSetModel class] you can\'t call method conversion without initilize it before. Execute first fill() and then convert()');
         }
 
         const metaData = this.getMetaData();

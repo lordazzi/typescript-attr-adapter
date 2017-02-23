@@ -16,7 +16,7 @@ describe('02 - ResultSetModel', () => {
 
         public constructor(resultSet: Object) {
             super();
-            this.initialize(resultSet);
+            this.fill(resultSet);
         }
     }
 
@@ -27,7 +27,7 @@ describe('02 - ResultSetModel', () => {
 
         public constructor(resultSet: Object) {
             super();
-            this.initialize(resultSet);
+            this.fill(resultSet);
         }
     }
 
@@ -78,7 +78,7 @@ describe('02 - ResultSetModel', () => {
 
                 public constructor(resultSet: Object) {
                     super();
-                    this.initialize(resultSet);
+                    this.fill(resultSet);
                 }
             }
 
@@ -121,7 +121,7 @@ describe('02 - ResultSetModel', () => {
 
             public constructor(resultSet: Object) {
                 super();
-                this.initialize(resultSet);
+                this.fill(resultSet);
             }
         }
 
