@@ -68,6 +68,7 @@ export abstract class ResultSetModel {
             const isInitializeProperty: boolean = (attr === 'initialized');
             const isArray: boolean = (this[attr] instanceof Array);
             let attrConverter: AttributeConverter<any, any> = null;
+
             if (metaData) {
                 attrConverter = metaData.get(attr);
             }
@@ -80,25 +81,34 @@ export abstract class ResultSetModel {
                 const baseModel = <ResultSetModel>this[attr];
                 json[attr] = baseModel.toJson();
             } else if (isArray) {
-                json[attr] = new Array();
-                for (let i = 0; i < this[attr].length; i++) {
-                    if (isBaseModel) {
-                        const baseModel = <ResultSetModel>this[attr][i];
-                        json[attr].push(baseModel.toJson());
-                    } else if (isObject) {
-                        throw new Error(`[ResultSetModel class] can\'t convert object in array of class "${this[attr].prototype.name}" at "${attr}" array. Did you forgot the AttributeAdapter decorator?`);
-                    } else {
-                        json[attr].push(this[attr][i]);
-                    }
-                }
+                json[attr] = this.convertArrayPropertyToJson(json[attr]);
             } else if (isObject) {
-                throw new Error(`[ResultSetModel class] can\'t convert object of class "${this[attr].prototype.name}" at "${attr}". Did you forgot the AttributeAdapter decorator?`);
+                throw new Error(`[ResultSetModel class] can\'t convert object in "${attr}" to json. Did you forgot the AttributeAdapter decorator?`);
             } else {
                 json[attr] = this[attr];
             }
         });
 
         return json;
+    }
+
+    private convertArrayPropertyToJson(attr: Array<any>): Array<any> {
+        const arr: Array<any> = new Array();
+        for (let i = 0; i < attr.length; i++) {
+
+            const isBaseModel: boolean = (attr[i] instanceof ResultSetModel);
+            const isObject: boolean = (attr[i] instanceof Object);
+            if (isBaseModel) {
+                const baseModel = <ResultSetModel>attr[i];
+                arr.push(baseModel.toJson());
+            } else if (isObject) {
+                throw new Error(`[ResultSetModel class] can\'t convert object in array to json. Did you forgot the AttributeAdapter decorator?`);
+            } else {
+                arr.push(attr[i]);
+            }
+        }
+
+        return arr;
     }
 
     /**
