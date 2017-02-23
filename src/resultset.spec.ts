@@ -20,6 +20,17 @@ describe('02 - ResultSetModel', () => {
         }
     }
 
+    class Comida extends ResultSetModel {
+        public sabor: string = null;
+        public cheiro: string = null;
+        public cor: string = null;
+
+        public constructor(resultSet: Object) {
+            super();
+            this.initialize(resultSet);
+        }
+    }
+
     let Ricardo: Pessoa;
 
     it('01 - Classe é capaz de ser instânciada a partir de um JSON', () => {
@@ -44,7 +55,6 @@ describe('02 - ResultSetModel', () => {
     it('05 - Não converte objeto para JSON se houver um objeto na classe sem solução para virar JSON', () => {
         expect(() => {
             let t = Ricardo.toJson();
-            console.info(t);
         }).toThrowError(Error);
     });
 
@@ -53,10 +63,10 @@ describe('02 - ResultSetModel', () => {
             String(Ricardo);
         }).toThrowError(Error);
     });
-    
+
     it('07 - Criando uma instância passando algo diferente de JSON por argumento', () => {
         expect(() => {
-            new Pessoa(<Object> Date);
+            new Pessoa(<Object>Date);
         }).toThrowError(Error);
     });
 
@@ -79,8 +89,9 @@ describe('02 - ResultSetModel', () => {
     it('09 - Chamando o metodo de converção sem chamar o de inicialização', () => {
         expect(() => {
             class Animal extends ResultSetModel {
-                public nome: string;
-                public sobrenome: string;
+                public raca: string;
+                public especie: string;
+                public barulho: string;
 
                 public constructor(resultSet: Object) {
                     super();
@@ -91,5 +102,14 @@ describe('02 - ResultSetModel', () => {
             new Animal({});
 
         }).toThrowError(Error);
+    });
+
+    it('10 - Consegue converter objeto simples para JSON', () => {
+        let frango: Comida = new Comida({ sabor: 'de frango', cheiro: 'de frango também', cor: 'amarelo' });
+        frango = <Comida> frango.toJson();
+
+        expect(frango.sabor).toBe('de frango');
+        expect(frango.cheiro).toBe('de frango também');
+        expect(frango.cor).toBe('amarelo');
     });
 });
