@@ -2,7 +2,7 @@
   "name": "attr-adapter",
   "version": "1.0.0",
   "description": "Library for TypeScript that acts like JPA's AttributeConverter interface",
-  "main": "dist/index.js",
+  "main": "index.js",
   "directories": {
     "doc": "docs",
     "example": "examples",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "karma start",
-    "build": "tsc --project src -pretty"
+    "build": "tsc --project src -pretty & copy \"package.json\" \"dist/package.json\""
   },
   "repository": {
     "type": "git",
