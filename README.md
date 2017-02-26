@@ -42,10 +42,12 @@ Then, now, you need a classe that represents something that comes from anywhere,
 import { AttributeAdapter, ResultSetModel } from 'attr-adapter';
 import { StringToDateConverter } from './string-to-date.converter';
 
-// This is just a piece of JPA, implemented with vague similarity, so, this is not an @Entity, but just a resultset of wherever that comes from wherever
+// This is just a piece of JPA, implemented with vague similarity, so, this is not an @Entity,
+// but just a resultset of wherever that comes from wherever
 class Person extends ResultSetModel {
  
-    //  you need initialize all object properties with null, without it, the class will not know the properties names because it will be not created in javascript on the transpilation
+    //  you need initialize all object properties with null, without it, the class will not
+    // know the properties names because it will be not created in javascript on the transpilation
     public name: string = null;
     public surname: string = null;
 
@@ -53,7 +55,8 @@ class Person extends ResultSetModel {
     @AttributeAdapter( StringToDateConverter )
     public birthday: Date = null;
 
-    // here where the conversion happens, the method 'fill' will set a json resource in the class, the 'convert' will call the converters in the class metadata and make the convertion
+    // here where the conversion happens, the method 'fill' will set a json resource in the class,
+    // the 'convert' will call the converters in the class metadata and make the convertion
     public constructor(json: Object) {
         super();
         this.fill(json);
@@ -64,9 +67,9 @@ class Person extends ResultSetModel {
 
 Instalation
 ----
-´´´sh
+```sh
 npm install attr-adapter
-´´´
+```
 
 License
 ----
